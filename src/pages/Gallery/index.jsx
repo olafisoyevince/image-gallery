@@ -1,121 +1,115 @@
-import React, { useState } from "react";
-import one from "../../assets/one.webp";
-import two from "../../assets/two.webp";
-import three from "../../assets/three.jpg";
-import four from "../../assets/four.jpg";
-import five from "../../assets/five.webp";
-import six from "../../assets/six.jpg";
-import seven from "../../assets/seven.jpg";
-import eight from "../../assets/eight.webp";
-import nine from "../../assets/nine.jpg";
-import ten from "../../assets/ten.avif";
-import eleven from "../../assets/eleven.avif";
-import twelve from "../../assets/twelve.jpg";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import React, { useState, useCallback } from "react";
+import {
+  DndContext,
+  closestCenter,
+  MouseSensor,
+  TouchSensor,
+  DragOverlay,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  rectSortingStrategy,
+} from "@dnd-kit/sortable";
+import SortableItem from "../../components/SortableItem";
+import Item from "../../components/Item";
 
 const Gallery = () => {
-  const imgList = [
-    {
-      id: "1",
-      path: one,
-    },
-    {
-      id: "2",
-      path: two,
-    },
-    {
-      id: "3",
-      path: three,
-    },
-    {
-      id: "4",
-      path: four,
-    },
-    {
-      id: "5",
-      path: five,
-    },
-    {
-      id: "6",
-      path: six,
-    },
-    {
-      id: "7",
-      path: seven,
-    },
-    {
-      id: "8",
-      path: eight,
-    },
-    {
-      id: "9",
-      path: nine,
-    },
-    {
-      id: "10",
-      path: ten,
-    },
-    {
-      id: "11",
-      path: eleven,
-    },
-    {
-      id: "12",
-      path: twelve,
-    },
-  ];
+  const [items, setItems] = useState([
+    "chaos",
+    "beth",
+    "morty",
+    "summer",
+    "jerry",
+    "rick making fun of morty",
+    "pickle rick",
+    "morty in love",
+    "rick opening mortys eyes",
+    "rick and morty running from space monster",
+    "rick and morty on another planet",
+    "jerry crying",
+  ]);
 
-  const [items, setItems] = useState(imgList);
+  const [activeId, setActiveId] = useState(null);
+  const [searchString, setSearchString] = useState("");
 
-  const onDragEnd = (result) => {
-    if (!result.destination) {
-      // Dragged outside of the list
-      return;
-    }
+  const handleChange = (event) => {
+    event.preventDefault();
 
-    const reorderedItems = [...items];
-    const [removed] = reorderedItems.splice(result.source.index, 1);
-    reorderedItems.splice(result.destination.index, 0, removed);
-
-    setItems(reorderedItems);
+    setSearchString(event.target.value.toLocaleLowerCase());
   };
 
+  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+
+  const handleDragStart = useCallback((event) => {
+    setActiveId(event.active.id);
+  }, []);
+
+  const handleDragEnd = useCallback((event) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      setItems((items) => {
+        const oldIndex = items.indexOf(active.id);
+        const newIndex = items.indexOf(over.id);
+
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
+
+    setActiveId(null);
+  }, []);
+
+  const handleDragCancel = useCallback(() => {
+    setActiveId(null);
+  }, []);
+
   return (
-    <div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="characters">
-          {(provided) => (
-            <ul
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              className=" w-full flex flex-wrap gap-8 justify-center"
-            >
-              {items.map(({ id, path }, index) => {
-                return (
-                  <Draggable key={id} draggableId={id} index={index}>
-                    {(provided) => (
-                      <li
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                        className=" w-[300px] h-[300px]"
-                      >
-                        <img
-                          src={path}
-                          alt=""
-                          className=" object-cover h-full w-full"
-                        />
-                      </li>
-                    )}
-                  </Draggable>
-                );
-              })}
-              {provided.placeholder}
-            </ul>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </div>
+    <>
+      <div className=" flex justify-center h-9 gap-5 m-auto w-[full] my-4">
+        <input
+          type="text"
+          className=" border border-black h-9 rounded-md pl-3 "
+          onChange={handleChange}
+          value={searchString}
+          placeholder="Search"
+        />
+      </div>
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
+      >
+        <SortableContext items={items} strategy={rectSortingStrategy}>
+          <div className=" m-auto w-[280px] sm:w-[375px] md:w-[700px] grid sm:grid-cols-2 md:grid-cols-3 gap-12">
+            {items
+              .filter((val) => {
+                if (searchString == "") {
+                  return val;
+                } else if (
+                  val
+                    .toLocaleLowerCase()
+                    .includes(searchString.toLocaleLowerCase())
+                ) {
+                  return val;
+                }
+              })
+              .map((id) => (
+                <SortableItem key={id} id={id} />
+              ))}
+          </div>
+        </SortableContext>
+
+        <DragOverlay adjustScale style={{ transformOrigin: "0 0" }}>
+          {activeId ? <Item id={activeId} isDragging /> : null}
+        </DragOverlay>
+      </DndContext>
+    </>
   );
 };
 
