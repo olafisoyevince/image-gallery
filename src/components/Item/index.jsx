@@ -11,6 +11,8 @@ import nine from "../../assets/nine.jpg";
 import ten from "../../assets/ten.avif";
 import eleven from "../../assets/eleven.avif";
 import twelve from "../../assets/twelve.jpg";
+import thirteen from "../../assets/thirteen.jpg";
+import fourteen from "../../assets/fourteen.png";
 
 const imgList = [
   {
@@ -31,7 +33,7 @@ const imgList = [
   {
     id: "4",
     path: four,
-    name: "rick and morty running from space monster",
+    name: "rick, morty and space monster",
   },
   {
     id: "5",
@@ -71,7 +73,17 @@ const imgList = [
   {
     id: "12",
     path: twelve,
-    name: "jerry",
+    name: "typical jerry",
+  },
+  {
+    id: "13",
+    path: thirteen,
+    name: "morty having fun",
+  },
+  {
+    id: "14",
+    path: fourteen,
+    name: "granpa rickkk",
   },
 ];
 

@@ -15,18 +15,21 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "../../components/SortableItem";
 import Item from "../../components/Item";
+import { Heading } from "@chakra-ui/react";
 
 const Gallery = () => {
   const [items, setItems] = useState([
     "chaos",
     "beth",
     "morty",
+    "morty having fun",
     "summer",
-    "jerry",
+    "typical jerry",
     "rick making fun of morty",
     "pickle rick",
     "morty in love",
     "rick opening mortys eyes",
+    "granpa rickkk",
     "rick, morty and space monster",
     "rick and morty on another planet",
     "jerry crying",
@@ -67,11 +70,13 @@ const Gallery = () => {
   }, []);
 
   return (
-    <>
-      <div className=" flex justify-center h-9 gap-5 m-auto w-[full] my-4">
+    <div className=" mb-10">
+      <Heading className="text-center mt-5">Drag'n'Drop</Heading>
+
+      <div className=" flex justify-center h-9 gap-5 m-auto w-[full] mb-6 mt-10">
         <input
           type="text"
-          className=" border border-black h-9 rounded-md pl-3 "
+          className=" border border-black h-9 rounded-md pl-3 w-[280px] sm:w-[375px]"
           onChange={handleChange}
           value={searchString}
           placeholder="Search"
@@ -109,7 +114,7 @@ const Gallery = () => {
           {activeId ? <Item id={activeId} isDragging /> : null}
         </DragOverlay>
       </DndContext>
-    </>
+    </div>
   );
 };
 

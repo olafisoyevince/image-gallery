@@ -44,6 +44,7 @@ const Login = () => {
         status: "success",
         duration: 2000,
         isClosable: true,
+        position: "top",
       });
       navigate("/gallery");
 
@@ -55,6 +56,7 @@ const Login = () => {
         status: "error",
         duration: 3000,
         isClosable: true,
+        position: "top",
       });
     }
   };
@@ -62,7 +64,7 @@ const Login = () => {
   return (
     <div className=" flex justify-center items-center h-[100dvh]">
       <div className=" w-[280px] sm:w-[375px] ">
-        <Text className=" text-center pb-7">Welcome back!</Text>
+        <Heading className=" text-center pb-7">Welcome back!</Heading>
         <form onSubmit={handleSubmit}>
           <div className=" pb-7">
             <Text>Username</Text>
