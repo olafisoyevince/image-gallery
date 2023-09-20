@@ -27,7 +27,7 @@ const Gallery = () => {
     "pickle rick",
     "morty in love",
     "rick opening mortys eyes",
-    "rick and morty running from space monster",
+    "rick, morty and space monster",
     "rick and morty on another planet",
     "jerry crying",
   ]);
@@ -86,7 +86,7 @@ const Gallery = () => {
         onDragCancel={handleDragCancel}
       >
         <SortableContext items={items} strategy={rectSortingStrategy}>
-          <div className=" m-auto w-[280px] sm:w-[375px] md:w-[700px] grid sm:grid-cols-2 md:grid-cols-3 gap-12">
+          <div className=" m-auto w-[280px] sm:w-[375px] md:w-[700px] xl:w-[1000px] grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-12">
             {items
               .filter((val) => {
                 if (searchString == "") {

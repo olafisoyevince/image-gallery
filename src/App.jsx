@@ -5,11 +5,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/gallery",
     element: <Gallery />,
   },
   {
-    path: "/login",
+    path: "/",
     element: <Login />,
   },
 ]);

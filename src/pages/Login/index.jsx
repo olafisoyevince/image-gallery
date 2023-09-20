@@ -45,7 +45,7 @@ const Login = () => {
         duration: 2000,
         isClosable: true,
       });
-      navigate("/");
+      navigate("/gallery");
 
       resetFormFields();
     } catch (error) {
