@@ -1,21 +1,16 @@
 import "./App.css";
 import Gallery from "./pages/Gallery";
 import Login from "./pages/Login";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-const router = createBrowserRouter([
-  {
-    path: "/gallery",
-    element: <Gallery />,
-  },
-  {
-    path: "/",
-    element: <Login />,
-  },
-]);
+import { Route, Routes } from "react-router-dom";
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/gallery" element={<Gallery />} />
+      <Route path="/*" element={<App />} />
+    </Routes>
+  );
 }
 
 export default App;

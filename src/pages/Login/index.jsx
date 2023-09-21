@@ -4,7 +4,7 @@ import {
   // createAuthUserWithEmailAndPassword,
   signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
-import { Heading, Text, useToast } from "@chakra-ui/react";
+import { Button, Heading, Text, useToast } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 const defaultFormFields = {
@@ -14,6 +14,7 @@ const defaultFormFields = {
 
 const Login = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
+  const [isLoading, setLoading] = useState(false);
   const { userName, password } = formFields;
   const toast = useToast();
   const navigate = useNavigate();
@@ -24,8 +25,6 @@ const Login = () => {
     setFormFields({ ...formFields, [name]: value });
   };
 
-  console.log(formFields);
-
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
@@ -34,6 +33,8 @@ const Login = () => {
     event.preventDefault();
 
     try {
+      setLoading(true);
+
       const { user } = await signInAuthUserWithEmailAndPassword(
         userName,
         password
@@ -58,6 +59,8 @@ const Login = () => {
         isClosable: true,
         position: "top",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,14 +93,16 @@ const Login = () => {
             />
           </div>
 
-          <div>
-            <button
-              className=" bg-black text-white p-1 rounded-md w-full h-9"
-              type="submit"
-            >
-              Login
-            </button>
-          </div>
+          <Button
+            isLoading={isLoading}
+            loadingText="Logging in..."
+            type="submit"
+            className=" bg-black text-white rounded-md w-full"
+            variant="solid"
+            colorScheme="black"
+          >
+            Login
+          </Button>
         </form>
       </div>
     </div>
